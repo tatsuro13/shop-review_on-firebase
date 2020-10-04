@@ -1,32 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { getShops } from "./src/lib/firebase";
-import { Shop } from "./src/types/shops";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import ShopReviewItem from './src/components/ShopReviewItem';
+import Stars from './src/components/Stars';
+import { getShops } from './src/lib/firebase';
+import { Shop } from './src/types/shops';
 
 export default function App() {
-
   const [shops, setShops] = useState<Shop[]>([]);
 
   useEffect(() => {
     getFirebaseItems();
-  }, [])
+  }, []);
 
   const getFirebaseItems = async () => {
     const shops = await getShops();
-    setShops(shops)
-  }
+    setShops(shops);
+  };
 
-  const shopItems = shops.map((shop, index) => (
-    <View style={{ margin: 10 }} key={index.toString()}>
-      <Text>{shop.name}</Text>
-      <Text>{shop.place}</Text>
-    </View>
-  ))
+  // const shopItems = shops.map((shop, index) => (
+  //   <ShopReviewItem shop={shop} key={index.toString()} />
+  // ));
+
   return (
-    <View style={styles.container}>
-      {shopItems}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={shops}
+        renderItem={({ item }: { item: Shop }) => (
+          <ShopReviewItem shop={item} />
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+      />
+    </SafeAreaView>
   );
 }
 

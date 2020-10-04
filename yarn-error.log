@@ -1,30 +1,21 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js add expo-contants
+  /Users/tatsuro/.anyenv/envs/nodenv/versions/14.4.0/bin/node /Users/tatsuro/.anyenv/envs/nodenv/versions/14.4.0/bin/yarn
 
 PATH: 
-  /Users/osuka_t/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+  /Users/tatsuro/.anyenv/envs/nodenv/versions/14.4.0/bin:/Users/tatsuro/.anyenv/envs/nodenv/libexec:/Users/tatsuro/.anyenv/envs/nodenv/plugins/nodenv-vars/bin:/Users/tatsuro/.anyenv/envs/nodenv/plugins/nodenv-default-packages/bin:/Users/tatsuro/.anyenv/envs/nodenv/plugins/node-build/bin:/Users/tatsuro/.anyenv/envs/nodenv/shims:/Users/tatsuro/.anyenv/envs/nodenv/bin:/Users/tatsuro/.anyenv/envs/nodenv/shims:/usr/local/opt/gettext/bin:/Users/tatsuro/.rbenv/shims:~/.rbenv/shims:/usr/local/bin:/Users/tatsuro/Library/Android/sdk/platform-tools:/Users/tatsuro/.yarn/bin:/Users/tatsuro/.config/yarn/global/node_modules/.bin:/Users/tatsuro/.anyenv/envs/nodenv/shims:/Users/tatsuro/.anyenv/envs/nodenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/usr/local/git/bin:/Users/tatsuro/opt/anaconda3/bin:/Users/tatsuro/opt/anaconda3/condabin:/Users/tatsuro/.anyenv/envs/nodenv/shims:/Users/tatsuro/.anyenv/envs/nodenv/bin:/usr/local/opt/gettext/bin:/Users/tatsuro/.rbenv/shims:~/.rbenv/shims:/Users/tatsuro/Library/Android/sdk/platform-tools:/Users/tatsuro/.yarn/bin:/Users/tatsuro/.config/yarn/global/node_modules/.bin
 
 Yarn version: 
-  1.22.4
+  1.22.5
 
 Node version: 
-  12.13.1
+  14.4.0
 
 Platform: 
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-contants: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:66987:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:140748:22)
-      at Request.emit (events.js:210:5)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141720:10)
-      at Request.emit (events.js:210:5)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141642:12)
-      at Object.onceWrapper (events.js:299:28)
-      at IncomingMessage.emit (events.js:215:7)
-      at endReadableNT (_stream_readable.js:1184:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: read ETIMEDOUT
+      at TLSWrap.onStreamRead (internal/stream_base_commons.js:205:27)
 
 npm manifest: 
   {
@@ -38,6 +29,7 @@ npm manifest:
     },
     "dependencies": {
       "expo": "~39.0.2",
+      "expo-constants": "^9.2.0",
       "expo-status-bar": "~1.0.2",
       "firebase": "7.9.0",
       "react": "16.13.1",
@@ -2886,7 +2878,7 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
-  expo-constants@~9.2.0:
+  expo-constants@^9.2.0, expo-constants@~9.2.0:
     version "9.2.0"
     resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.2.0.tgz#e86a38793deaff9018878afac65bce2543c80a4c"
     integrity sha512-WKwiEMvBgPrEPEyZKm21UUB2KWQux9OCWf6ZDORLTln7kO3rsbaJEprfWUWTP7AxyaLMYfN+/0WFHjZc25SZWQ==
