@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
-import "firebase/firestore";
-import { Shop } from "../types/shops";
-import Constants from "expo-constants"
+import 'firebase/firestore';
+import { Shop } from '../types/shops';
+import Constants from 'expo-constants';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -9,7 +9,12 @@ if (!firebase.apps.length) {
 }
 
 export const getShops = async () => {
-  const snapshot = await firebase.firestore().collection("shops").get();
-  const shops = snapshot.docs.map(doc => doc.data() as Shop);
+  const snapshot = await firebase
+    .firestore()
+    .collection('shops')
+    // .where('place', '==', '品川')
+    .orderBy('score', 'desc')
+    .get();
+  const shops = snapshot.docs.map((doc) => doc.data() as Shop);
   return shops;
-}
+};

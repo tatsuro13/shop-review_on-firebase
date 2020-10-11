@@ -8,27 +8,31 @@ type Props = {
   textSize?: number;
 };
 
-const Stars: React.FC<Props> = ({ score, starSize = 16, textSize = 14 }) => {
+const Stars: React.FC<Props> = ({
+  score,
+  starSize = 16,
+  textSize = 14,
+}: Props) => {
   return (
     <View style={styles.container}>
       <FontAwesome
-        name={score >= 1 ? 'star' : score >= 0.5 ? 'star-half-o' : 'start-o'}
+        name={score >= 1 ? 'star' : score >= 0.5 ? 'star-half-o' : 'star-o'}
         style={[styles.star, { fontSize: starSize }]}
       />
       <FontAwesome
-        name={score >= 2 ? 'star' : score >= 1.5 ? 'star-half-o' : 'start-o'}
+        name={score >= 2 ? 'star' : score >= 1.5 ? 'star-half-o' : 'star-o'}
         style={[styles.star, { fontSize: starSize }]}
       />
       <FontAwesome
-        name={score >= 3 ? 'star' : score >= 2.5 ? 'star-half-o' : 'start-o'}
+        name={score >= 3 ? 'star' : score >= 2.5 ? 'star-half-o' : 'star-o'}
         style={[styles.star, { fontSize: starSize }]}
       />
       <FontAwesome
-        name={score >= 4 ? 'star' : score >= 3.5 ? 'star-half-o' : 'start-o'}
+        name={score >= 4 ? 'star' : score >= 3.5 ? 'star-half-o' : 'star-o'}
         style={[styles.star, { fontSize: starSize }]}
       />
       <FontAwesome
-        name={score >= 5 ? 'star' : score >= 4.5 ? 'star-half-o' : 'start-o'}
+        name={score >= 5 ? 'star' : score >= 4.5 ? 'star-half-o' : 'star-o'}
         style={[styles.star, { fontSize: starSize }]}
       />
       <Text style={[styles.scoreText, { fontSize: textSize }]}>{score}</Text>
