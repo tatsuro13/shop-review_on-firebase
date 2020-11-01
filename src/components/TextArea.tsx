@@ -7,10 +7,10 @@ type Props = {
     value: string;
     label: string;
     height?: number;
-    plaveHolder?: string; 
+    placeHolder?: string; 
 }
 
-const TextArea: React.FC<Props> = ({value, onChangeText, label, height, plaveHolder}: Props) => {
+const TextArea: React.FC<Props> = ({value, onChangeText, label, height, placeHolder}: Props) => {
     return (
         <View style={[styles.container, !!height && {height}]}>
             <Text style={styles.label}>{label}</Text>
@@ -19,7 +19,7 @@ const TextArea: React.FC<Props> = ({value, onChangeText, label, height, plaveHol
             onChangeText={(text) => onChangeText(text)}
             value={value}
             multiline={true}
-            placeholder={plaveHolder}
+            placeholder={placeHolder}
              />
         </View>
     )

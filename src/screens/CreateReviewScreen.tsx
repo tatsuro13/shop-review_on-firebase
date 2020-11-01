@@ -1,12 +1,17 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
-import { ListViewBase, SafeAreaView, StyleSheet, Text } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import {SafeAreaView, StyleSheet } from 'react-native'
 import { RootStackParamList } from '../types/navigation'
 import { IconButton } from '../components/IconButton'
+import Button from '../components/Button'
 import TextArea from '../components/TextArea'
 import StarInput from '../components/StarInput'
 import { Value } from 'react-native-reanimated'
+import { addReview } from '../lib/firebase'
+import { UserConText } from '../contexts/userContexts'
+import firebase from "firebase";
+import { Review } from '../types/review'
 
 type Props = {
     navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>
@@ -17,6 +22,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
     const {shop} = route.params;
     const [text, setText] = useState<string>('');
     const [score, setScore] = useState<number>(3);
+    const {user} = useContext(UserConText)
 
     useEffect(() => {
         navigation.setOptions({
@@ -27,10 +33,29 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
         })
     },[])
 
+    const onSubmit = async () => {
+        const review = {
+            user: {
+                name: user.name,
+                id: user.id,
+              },
+              shop: {
+                name: shop.name,
+                id: shop.id,
+              },
+              text,
+              score,
+              updatedAt: firebase.firestore.Timestamp.now(),
+              createdAt: firebase.firestore.Timestamp.now(),
+        } as Review
+        await addReview(shop.id, review)
+    };
+
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
             <StarInput score={score} onChangeScore={(value) => setScore(value)} />
-            <TextArea value={text} onChangeText={(value) => setText(value)} label='レビュー' plaveHolder='レビューを書いてください' />
+            <TextArea value={text} onChangeText={(value) => setText(value)} label='レビュー' placeHolder='レビューを書いてください' />
+            <Button text="レビューを投稿する" onPress={onSubmit} />
         </SafeAreaView>
     )
 }
