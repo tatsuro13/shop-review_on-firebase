@@ -2,16 +2,16 @@ import React from 'react'
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 type Props = {
-    onChangeText: (text: string) => void;
+    onChangeText: any
     value: string;
     label: string;
 };
 
-const Form:React.FC<Props> = ({value, onChangeText, label}:Props) => {
+const Form:React.FC<Props> = ({value, onChangeText, label}: Props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
-            <TextInput style={styles.input} onChange={(text) => onChangeText(text)} value={value} />
+            <TextInput style={styles.input} onChangeText={(text) => onChangeText(text)} value={value} />
         </View>
     )
 }

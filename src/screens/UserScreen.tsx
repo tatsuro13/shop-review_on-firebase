@@ -20,17 +20,17 @@ type Props = {
 };
 
 export const UserScreen: React.FC<Props> = ({ navigation, route }: Props) => {
-  const {user, setUser} = useContext(UserConText);
-  const [name, setName] = useState<string>(user.name)
-  const [loading, setLoading] = useState<boolean>(false)
+  const { user, setUser } = useContext(UserConText);
+  const [name, setName] = useState<string>(user.name);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     setLoading(true);
     const updatedAt = firebase.firestore.Timestamp.now();
     await updateUser(user.id, { name, updatedAt });
     setUser({ ...user, name, updatedAt });
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
 
   return (
