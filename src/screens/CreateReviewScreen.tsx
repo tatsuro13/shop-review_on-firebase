@@ -15,6 +15,7 @@ import { Review } from '../types/review'
 import { pickImage } from '../lib/image-picker'
 import { getExtension } from '../utills/file'
 import Loading from '../components/Loading'
+import { ReviewsContext } from '../contexts/reviewsContext'
 
 type Props = {
     navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>
@@ -28,6 +29,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
     const [imageUri, setImageUri] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
     const {user} = useContext(UserConText)
+    const {reviews, setReviews} = useContext(ReviewsContext);
 
     useEffect(() => {
         navigation.setOptions({
@@ -49,7 +51,8 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
         const storagePath = `reviews/${reviewDocRef.id}.${ext}`;
         const downloadUrl = await uploadImage(imageUri, storagePath);
 
-        const review = {　　
+        const review = {　
+            id: reviewDocRef.id,　
             user: {
                 name: user.name,
                 id: user.id,
@@ -65,6 +68,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
               createdAt: firebase.firestore.Timestamp.now(),
         } as Review;
         await reviewDocRef.set(review);
+        setReviews([review, ...reviews])
         setLoading(false);
         navigation.goBack();
     };
