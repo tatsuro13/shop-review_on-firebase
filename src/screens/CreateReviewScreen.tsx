@@ -1,18 +1,20 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useContext, useEffect, useState } from 'react'
-import {Image, SafeAreaView, StyleSheet, View } from 'react-native'
+import {Alert, Image, SafeAreaView, StyleSheet, View } from 'react-native'
 import { RootStackParamList } from '../types/navigation'
 import { IconButton } from '../components/IconButton'
 import Button from '../components/Button'
 import TextArea from '../components/TextArea'
 import StarInput from '../components/StarInput'
 import { Value } from 'react-native-reanimated'
-import { addReview } from '../lib/firebase'
+import { createReviewRef, uploadImage } from '../lib/firebase'
 import { UserConText } from '../contexts/userContexts'
 import firebase from "firebase";
 import { Review } from '../types/review'
 import { pickImage } from '../lib/image-picker'
+import { getExtension } from '../utills/file'
+import Loading from '../components/Loading'
 
 type Props = {
     navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>
@@ -24,6 +26,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
     const [text, setText] = useState<string>('');
     const [score, setScore] = useState<number>(3);
     const [imageUri, setImageUri] = useState<string>("")
+    const [loading, setLoading] = useState<boolean>(false)
     const {user} = useContext(UserConText)
 
     useEffect(() => {
@@ -36,7 +39,17 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
     },[])
 
     const onSubmit = async () => {
-        const review = {
+      if (!text || !imageUri) {
+        Alert.alert("レビューまたは画像がありません");
+        return;
+      }
+      setLoading(true);
+        const reviewDocRef = await createReviewRef(shop.id);
+        const ext = getExtension(imageUri);
+        const storagePath = `reviews/${reviewDocRef.id}.${ext}`;
+        const downloadUrl = await uploadImage(imageUri, storagePath);
+
+        const review = {　　
             user: {
                 name: user.name,
                 id: user.id,
@@ -47,10 +60,13 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
               },
               text,
               score,
+              imageUrl: downloadUrl,
               updatedAt: firebase.firestore.Timestamp.now(),
               createdAt: firebase.firestore.Timestamp.now(),
-        } as Review
-        await addReview(shop.id, review)
+        } as Review;
+        await reviewDocRef.set(review);
+        setLoading(false);
+        navigation.goBack();
     };
 
     const onPickImage = async () => {
@@ -66,6 +82,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
               <IconButton name="camera" onPress={onPickImage} color="#ccc" />
               {!!imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
             </View>
+            <Loading visible={loading} />
             <Button text="レビューを投稿する" onPress={onSubmit} />
         </SafeAreaView>
     )
