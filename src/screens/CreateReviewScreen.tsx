@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useContext, useEffect, useState } from 'react'
-import {SafeAreaView, StyleSheet } from 'react-native'
+import {Image, SafeAreaView, StyleSheet, View } from 'react-native'
 import { RootStackParamList } from '../types/navigation'
 import { IconButton } from '../components/IconButton'
 import Button from '../components/Button'
@@ -12,6 +12,7 @@ import { addReview } from '../lib/firebase'
 import { UserConText } from '../contexts/userContexts'
 import firebase from "firebase";
 import { Review } from '../types/review'
+import { pickImage } from '../lib/image-picker'
 
 type Props = {
     navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>
@@ -22,6 +23,7 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
     const {shop} = route.params;
     const [text, setText] = useState<string>('');
     const [score, setScore] = useState<number>(3);
+    const [imageUri, setImageUri] = useState<string>("")
     const {user} = useContext(UserConText)
 
     useEffect(() => {
@@ -51,10 +53,19 @@ export const CreateReviewScreen:React.FC<Props> = ({navigation, route}: Props) =
         await addReview(shop.id, review)
     };
 
+    const onPickImage = async () => {
+      const uri = await pickImage();
+      setImageUri(uri);
+    }
+ 
     return (
         <SafeAreaView style={styles.container}>
             <StarInput score={score} onChangeScore={(value) => setScore(value)} />
             <TextArea value={text} onChangeText={(value) => setText(value)} label='レビュー' placeHolder='レビューを書いてください' />
+            <View style={styles.photoContainer}>
+              <IconButton name="camera" onPress={onPickImage} color="#ccc" />
+              {!!imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
+            </View>
             <Button text="レビューを投稿する" onPress={onSubmit} />
         </SafeAreaView>
     )
