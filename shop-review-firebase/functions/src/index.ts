@@ -3,6 +3,13 @@ import * as functions from 'firebase-functions';
 import admin = require('firebase-admin');
 import { Review } from './types/review';
 import { Shop } from './types/shops';
+import algoliasearch from 'algoliasearch'
+
+const ALGOLIA_ID = functions.config().algoria.id;
+const ALGOLIA_ADMIN_KEY = functions.config().algoria.key;
+
+const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
+const index = client.initIndex("reviews");
 
 admin.initializeApp();
 
@@ -10,6 +17,7 @@ exports.onUpdateUser = functions
 .region('asia-northeast1')
 .firestore.document("users/{userId}")
 .onUpdate(async (change, context) => {
+    console.log("onUpdate");
     const {userId} = context.params;
     const newUser = change.after.data() as User;
 
@@ -32,11 +40,11 @@ exports.onUpdateUser = functions
 })
 
 exports.onWriteReview = functions
-  .region('asia-northeast1')
-  .firestore.document("shops/{shopId}/reviews/{reviewId}")
-  .onWrite(async (change, context) => {
+.region('asia-northeast1')
+.firestore.document("shops/{shopId}/reviews/{reviewId}")
+.onWrite(async (change, context) => {
     console.log("onWrite");
-    const { shopId } = context.params;
+    const { shopId, reviewId } = context.params;
     const review = change.after.data() as Review;
     const db = admin.firestore();
     try {
@@ -91,6 +99,11 @@ exports.onWriteReview = functions
         };
       }
       await shopRef.update(params);
+
+      index.saveObject({
+          objectID: reviewId,
+          ...review
+      });
     }catch(err){
         console.log(err)
     }

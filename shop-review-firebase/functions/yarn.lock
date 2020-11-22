@@ -599,7 +599,7 @@ agent-base@6:
   dependencies:
     debug "4"
 
-algoliasearch@^4.3.0:
+algoliasearch@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.8.0.tgz#12bb88b4093b05a5afdc369d3e8b83036d5f4822"
   integrity sha512-y2PisBS5323otDtuZuUJavk6AATBiq7M/lDryClRigpU3dHGGamtoN/8dDD4/giw38QV7dfw2LwogU6Xb4txmQ==
